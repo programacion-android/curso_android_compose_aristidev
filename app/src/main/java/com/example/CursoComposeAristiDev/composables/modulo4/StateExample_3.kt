@@ -20,6 +20,7 @@ fun CounterScreen(modifier: Modifier = Modifier) {
     Column(modifier = modifier.padding(30.dp)) {
         Text("Pulsaciones: $counter")
         Button(onClick = {
+            //Esto es lógica de negocio, que debería ir en otro módulo
             counter++
             Log.d("counter",counter.toString())
         }) {

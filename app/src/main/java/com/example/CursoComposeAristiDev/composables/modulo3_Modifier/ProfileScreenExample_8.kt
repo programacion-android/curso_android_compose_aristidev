@@ -1,5 +1,6 @@
 package com.example.CursoComposeAristiDev.composables.modulo3_Modifier
 
+import android.util.Log
 import androidx.compose.foundation.Image
 
 import androidx.compose.foundation.background
@@ -47,6 +48,7 @@ private fun profileScreen_j() {
         .fillMaxSize()
         .clickable {
             //Aqui iría el código a ejecutar al pulsar sobre Box
+            Log.i("clicableBox","Has pulsado en profile Screen");
         }
         .padding(vertical = 20.dp), contentAlignment = Alignment.TopStart) {
         Row(
