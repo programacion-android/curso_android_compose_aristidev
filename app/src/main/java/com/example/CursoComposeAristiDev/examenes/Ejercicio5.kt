@@ -1,13 +1,15 @@
-package com.example.CursoComposeAristiDev.ejercicios
+package com.example.CursoComposeAristiDev.examenes
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.sizeIn
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
@@ -20,13 +22,14 @@ import com.example.CursoComposeAristiDev.R
 fun ImagenConEtiqueta(modifier: Modifier = Modifier) {
     Box(modifier = modifier.padding(20.dp)){
         Image(
-            painter = painterResource(R.drawable.paisaje),
+            painter = painterResource(R.drawable.thumb_up),
             contentDescription = null,
-            modifier = Modifier.width(250.dp).height(180.dp)
+           // modifier = Modifier.width(250.dp).height(180.dp)
+            modifier=Modifier.sizeIn(250.dp,180.dp)
         )
         Text("Nuevo",
             color=Color.White,
-            modifier = Modifier.background(color=Color.Red))
+            modifier = Modifier.background(color=Color.Red).align(Alignment.TopEnd))
     }
 
 }

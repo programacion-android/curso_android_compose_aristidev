@@ -19,6 +19,7 @@ import com.example.CursoComposeAristiDev.composables.modulo4.CounterScreen_Examp
 import com.example.CursoComposeAristiDev.composables.pruebas_modulo4.CounterScreenPrueba
 import com.example.CursoComposeAristiDev.core.AppNavigation
 import com.example.CursoComposeAristiDev.ejercicios.Ejercicio2_TextField_StateHosting
+import com.example.CursoComposeAristiDev.features.IMC.IMCScreen
 import com.example.CursoComposeAristiDev.features.MenuScreen
 import com.example.CursoComposeAristiDev.ui.theme.CursoComposeAristiDev_Theme
 
@@ -28,8 +29,9 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             CursoComposeAristiDev_Theme {
+               //IMCScreen()
                 AppNavigation()
-                //MenuScreen(modifier = Modifier.fillMaxWidth())
+               // MenuScreen(modifier = Modifier.fillMaxWidth())
                 //Ejercicio2_TextField_StateHosting(modifier = Modifier.fillMaxWidth())
                // CounterScreenPrueba()
                // CounterScreen_Example4(modifier=Modifier.fillMaxSize())
