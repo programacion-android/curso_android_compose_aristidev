@@ -1,5 +1,6 @@
 package com.example.CursoComposeAristiDev.features.IMC
 
+
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -12,10 +13,14 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -23,34 +28,55 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.CursoComposeAristiDev.R
 import com.example.CursoComposeAristiDev.features.IMC.composables.CounterSelector
 import com.example.CursoComposeAristiDev.features.IMC.composables.GenderSelector
 import com.example.CursoComposeAristiDev.features.IMC.composables.HeightSelector
-import com.example.CursoComposeAristiDev.ui.theme.AppBackground
+
+import com.example.CursoComposeAristiDev.ui.theme.colorAppBackground
+import com.example.CursoComposeAristiDev.ui.theme.colorBackgroundComponent
+import com.example.CursoComposeAristiDev.ui.theme.colorPrimaryButton
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Preview
 @Composable
-fun IMCScreen(onResultSelected: (Float) -> Unit = {},
-              onBackSelected:()->Unit={}) {
+fun IMCScreen(
+    onResultSelected: (Float) -> Unit = {},
+    onBackSelected: () -> Unit = {}
+) {
     var isMaleSelected by remember { mutableStateOf(true) }
     var height by remember { mutableStateOf(160f) }
     var age by remember { mutableStateOf(18) }
     var weight by remember { mutableStateOf(60) }
 
-    Scaffold(
-        topBar = {
-            //¡Ojo! Es experimental
-            TopAppBar(title = { Text("IMC Calculadora") })
-        },
-        containerColor = AppBackground
+    Scaffold(topBar = {//¡Ojo! Es experimental
+            TopAppBar(
+                title = { Text("IMC Calculadora") },
+                colors = TopAppBarDefaults.topAppBarColors(
+                    containerColor = colorAppBackground,
+                    titleContentColor = Color.White,
+                    navigationIconContentColor = Color.White
+                ),
+                navigationIcon = {
+                    IconButton(onClick = onBackSelected) {
+                        Icon(painter = painterResource(R.drawable.ic_back),
+                            contentDescription = "Botón Atrás"
+                        )
+                    }
+                }
+            )
+        },//fin topBar
+        containerColor = colorAppBackground
     ) { paddingValues ->
-        Column(Modifier
-            .fillMaxSize()
-            .padding(paddingValues)) {
+        Column(
+            Modifier
+                .fillMaxSize()
+                .padding(paddingValues)
+        ) {
             GenderSelector(
                 isMaleSelected = isMaleSelected,
                 onGenderSelected = {
@@ -80,8 +106,10 @@ fun IMCScreen(onResultSelected: (Float) -> Unit = {},
                 }, modifier = Modifier
                     .fillMaxWidth()
                     .padding(16.dp)
-                    .height(64.dp),
-                shape = RoundedCornerShape(4)
+                    .height(72.dp),
+                shape = RoundedCornerShape(16.dp),
+                colors = ButtonDefaults.buttonColors(containerColor = colorPrimaryButton,
+                    contentColor = Color.White)
             ) {
                 Text("Calcular", fontSize = 28.sp)
             }

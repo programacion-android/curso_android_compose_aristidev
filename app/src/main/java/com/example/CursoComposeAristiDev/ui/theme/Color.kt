@@ -2,10 +2,17 @@ package com.example.CursoComposeAristiDev.ui.theme
 
 import androidx.compose.ui.graphics.Color
 
-//Nuevo color para el fondo de la app
-val AppBackground=Color(0xFF131D4B)
-val colorSelectedCard = Color(0xFF4287f5)
-val colorUnSelectedCard = Color(0xFFabc8f7)
+
+//--Nuevos colores--
+val colorAppBackground=Color(0xFF535354)
+val colorBackgroundComponent=Color(0xFF9499FA)
+val colorBackgroundComponentSelected=Color(0xFF202769)
+val colorPrimaryButton=Color(0xFFCB1515)
+val colorSecondaryText=Color(0xFFA2BBA0)
+val colorControl=Color(0xFF103DC4)
+//Borrar estas variables antiguas
+//val colorSelectedCard = Color(0xFF4287f5)
+//val colorUnSelectedCard = Color(0xFFabc8f7)
 
 //val AppBackground=Color(0xFF2C43B7)
 val Purple80 = Color(0xFFD0BCFF)

@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardColors
 import androidx.compose.material3.CardDefaults
@@ -24,6 +25,10 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.CursoComposeAristiDev.ui.theme.colorAppBackground
+import com.example.CursoComposeAristiDev.ui.theme.colorBackgroundComponent
+import com.example.CursoComposeAristiDev.ui.theme.colorBackgroundComponentSelected
+import com.example.CursoComposeAristiDev.ui.theme.colorSecondaryText
 import com.example.CursoComposeAristiDev.ui.theme.colorSelectedCard
 import com.example.CursoComposeAristiDev.ui.theme.colorUnSelectedCard
 
@@ -77,10 +82,12 @@ fun GenderCard(
 
     // val color = if (isSelected) {Color.Red} else {Color.Cyan}
     val colorContenedor = if (isSelected) {
-        colorSelectedCard
+        colorBackgroundComponentSelected
+       // colorSelectedCard
        // Color.Red
     } else {
-        colorUnSelectedCard
+        colorBackgroundComponent
+        //colorUnSelectedCard
         //Color.Cyan
     }
     Card(
@@ -88,8 +95,10 @@ fun GenderCard(
             .height(160.dp)
             // .background(color)
             .clickable { onClick() },
+        shape = RoundedCornerShape(16.dp),
         colors = CardDefaults.cardColors(
             containerColor = colorContenedor,
+           // containerColor = colorBackgroundComponent,
             contentColor = Color.White
         )
     ) {
@@ -100,7 +109,9 @@ fun GenderCard(
             verticalArrangement = Arrangement.Center
         ) {
             Text(symbol, fontSize = 64.sp, fontWeight = FontWeight.ExtraBold)
-            Text(gender, fontSize = 18.sp, fontWeight = FontWeight.Bold)
+            Text(gender, fontSize = 18.sp,
+                fontWeight = FontWeight.Medium,
+                color= colorSecondaryText)
         }
     }
 }//fin GenderCard

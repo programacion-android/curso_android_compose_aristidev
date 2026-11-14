@@ -6,12 +6,15 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -20,6 +23,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.CursoComposeAristiDev.ui.theme.colorAppBackground
+import com.example.CursoComposeAristiDev.ui.theme.colorPrimaryButton
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Preview
@@ -31,8 +36,16 @@ fun IMCResultScreen(result: Float = 20f, onBackSelected: () -> Unit = {}) {
 
     Scaffold(
         topBar = {
-            TopAppBar(title = { Text("Analizando ...") })
-        }
+            TopAppBar(
+                title = { Text("Analizando ...") },
+                colors = TopAppBarDefaults.topAppBarColors(
+                    containerColor = colorAppBackground,
+                    titleContentColor = Color.White
+                )
+            )
+        },
+        containerColor = colorAppBackground
+
     ) { paddingValues ->
         Column(
             modifier = Modifier
@@ -40,23 +53,29 @@ fun IMCResultScreen(result: Float = 20f, onBackSelected: () -> Unit = {}) {
                 .padding(paddingValues)
                 .padding(16.dp)
         ) {
-            Text("Tu resultado: ")
+            Text(
+                "Tu resultado: ",
+                color = Color.White,
+                fontSize = 48.sp,
+                fontWeight = FontWeight.Bold
+            )
             Spacer(modifier = Modifier.height(32.dp))
             Card(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .weight(1f)
+                    .weight(1f),
+                shape = RoundedCornerShape(16.dp)
             ) {
                 /*Card Ocupa todo el espacio sobrante*/
                 Text(category, color = color, fontSize = 28.sp, fontWeight = FontWeight.ExtraBold)
                 Text(
-                    result.toString(),
-                    color = color,
+                    String.format("%.2f", result),
+                    color = Color.White,
                     fontSize = 74.sp,
                     fontWeight = FontWeight.Bold
                 )
                 Text(
-                    description, color = color, fontSize = 24.sp,
+                    description, color = Color.White, fontSize = 24.sp,
                     fontWeight = FontWeight.Bold
                 )
             }
@@ -66,7 +85,12 @@ fun IMCResultScreen(result: Float = 20f, onBackSelected: () -> Unit = {}) {
                     onBackSelected()
                 }, modifier = Modifier
                     .fillMaxWidth()
-                    .height(60.dp)
+                    .height(72.dp),
+                shape = RoundedCornerShape(16.dp),
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = colorPrimaryButton,
+                    contentColor = Color.White
+                )
             ) {
                 Text("Recalcular", fontSize = 28.sp, fontWeight = FontWeight.ExtraBold)
             }

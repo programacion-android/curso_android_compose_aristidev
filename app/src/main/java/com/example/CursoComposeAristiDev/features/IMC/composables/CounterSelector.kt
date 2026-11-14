@@ -2,24 +2,28 @@ package com.example.CursoComposeAristiDev.features.IMC.composables
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.material3.Button
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.CursoComposeAristiDev.ui.theme.colorBackgroundComponent
+import com.example.CursoComposeAristiDev.ui.theme.colorControl
+import com.example.CursoComposeAristiDev.ui.theme.colorSecondaryText
 import com.example.CursoComposeAristiDev.ui.theme.colorUnSelectedCard
 
 
@@ -66,7 +70,10 @@ fun CounterCard(
     onMinus: () -> Unit
 ) {
     Card(modifier.height(180.dp),
-        colors= CardDefaults.cardColors(containerColor = colorUnSelectedCard)) {
+        shape = RoundedCornerShape(16.dp),
+        colors= CardDefaults.cardColors(
+            containerColor = colorBackgroundComponent
+        )) {
         Column(
             Modifier
                 .fillMaxWidth()
@@ -75,20 +82,39 @@ fun CounterCard(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             //Mejora4. Aumentar tamaño fuente textos: title y value
-            Text(title, fontSize = 48.sp, fontWeight = FontWeight.Bold)
+            Text(title, fontSize = 48.sp, fontWeight = FontWeight.Bold,color= colorSecondaryText)
             Text(value.toString(), fontSize = 32.sp, fontWeight = FontWeight.Bold)
 
             //Mejora3. Botones redondos
             //Mejora1.Forma2. Dejar espacio entre los botones
             Row(horizontalArrangement = Arrangement.spacedBy(16.dp)) {
-                Button(onClick = {onPlus()}, modifier = Modifier.size(42.dp),
+                FloatingActionButton(onClick = {onPlus()},
+                    modifier = Modifier.size(52.dp),
+                    shape=RoundedCornerShape(16.dp),
+                    containerColor = colorControl,
+                    contentColor=Color.White
+                ) {
+                    Text("+")
+                }
+                FloatingActionButton(onClick = {onMinus()},
+                    modifier = Modifier.size(52.dp),
+                    shape=RoundedCornerShape(16.dp),
+                    containerColor = colorControl,
+                    contentColor=Color.White
+                ) {
+                    Text("-")
+                }
+              /* Button(onClick = {onPlus()},
+                   modifier = Modifier.size(42.dp),
                     contentPadding = PaddingValues(0.dp)) {
                     Text("+")
                 }
                 Button(onClick = {onMinus()}, modifier = Modifier.size(42.dp),
                     contentPadding = PaddingValues(0.dp)) {
                     Text("-")
-                }
+                }*/
+
+
             }
             //Mejora1.Forma1. Dejar espacio entre los botones
             /*Row(modifier= Modifier.fillMaxWidth(),
