@@ -1,6 +1,5 @@
 package com.example.CursoComposeAristiDev.features.settings
 
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -20,22 +19,44 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.navigation3.runtime.NavKey
 import com.example.CursoComposeAristiDev.R
 import com.example.CursoComposeAristiDev.ui.theme.colorBackgroundComponent
 import com.example.CursoComposeAristiDev.ui.theme.colorSecondaryText
-
+import androidx.compose.runtime.rememberCoroutineScope
+import kotlinx.coroutines.launch
 @Preview
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SettingsScreen(onBackSelected: () -> Unit = {}) {
+    //1º.- constante context representa el contexto o composable actual
+    val context= LocalContext.current
+
+    //2º- constante settingsDataStore representa la base de datos (BD) de preferencias
+    /*¡Ojo!No deberíamos declararla dentro de un composable
+    ya que este puede ser recompuesto cada vez que cambie
+    de estado, creando de nuevo la variable de BD.
+    De momento, la declaramos en este composable usamos
+    remember para que recuerde los cambios de estado de la BD.
+    */
+    //val settingsDataStore= SettingsDataStore(context)
+    val settingsDataStore= remember {SettingsDataStore(context)}
+
+    //Declarar variable coroutineScope para ejecutar dentro de un hilo un método suspendido
+    val coroutineScope = rememberCoroutineScope()
+    /*
+     3º Escuchar el cambio de las preferencias de notificaciones
+     */
+    val notificationsEnabled by settingsDataStore.notificationsEnabled.collectAsState(true)
     Scaffold(
         topBar = {
             TopAppBar(
@@ -88,7 +109,13 @@ fun SettingsScreen(onBackSelected: () -> Unit = {}) {
                 ),
             ) {
                 Column() {
-                    Switch(checked = true, onCheckedChange = {})
+                    //4º.- Mostrar el valor de las notificaciones (notificationnsEnabled)
+                    Switch(checked = notificationsEnabled, onCheckedChange = {
+                            isChecked ->
+                        coroutineScope.launch {
+                            settingsDataStore.setNotificationsEnabled(isChecked)
+                        }
+                    })
                     Switch(checked = false, onCheckedChange = {})
                     Switch(checked = true, onCheckedChange = {})
                 }
