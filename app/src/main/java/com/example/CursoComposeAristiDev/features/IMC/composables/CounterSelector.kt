@@ -24,7 +24,7 @@ import androidx.compose.ui.unit.sp
 import com.example.CursoComposeAristiDev.ui.theme.colorBackgroundComponent
 import com.example.CursoComposeAristiDev.ui.theme.colorControl
 import com.example.CursoComposeAristiDev.ui.theme.colorSecondaryText
-import com.example.CursoComposeAristiDev.ui.theme.colorUnSelectedCard
+
 
 
 /*

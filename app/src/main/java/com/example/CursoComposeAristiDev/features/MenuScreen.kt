@@ -19,23 +19,28 @@ import androidx.compose.ui.unit.dp
 //   MenuScreen(modifier = Modifier.fillMaxWidth())
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MenuScreen(modifier: Modifier = Modifier, onIMCSelected:()->Unit) {
+fun MenuScreen(
+    modifier: Modifier = Modifier,
+    onIMCSelected: () -> Unit,
+    onSettingSelected: () -> Unit
+) {
     Scaffold(modifier = modifier, topBar = {
-        TopAppBar(title = {Text("AristiDevs App")})
-    }) {
-        paddingValues ->
-        Column(modifier=modifier.padding(paddingValues),
-            horizontalAlignment = Alignment.CenterHorizontally) {
+        TopAppBar(title = { Text("AristiDevs App") })
+    }) { paddingValues ->
+        Column(
+            modifier = modifier.padding(paddingValues),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
             Button(onClick = {
-               onIMCSelected()
+                onIMCSelected()
             }) {
                 Text("IMC Calculator")
             }
-            Spacer(modifier=Modifier.height(24.dp))
+            Spacer(modifier = Modifier.height(24.dp))
             Button(onClick = {
-                //No hay código que ejecutar
+                onSettingSelected()
             }) {
-                Text("IMC Calculator")
+                Text("Settings")
             }
         }
     }

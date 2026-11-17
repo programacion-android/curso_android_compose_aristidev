@@ -29,8 +29,6 @@ import com.example.CursoComposeAristiDev.ui.theme.colorAppBackground
 import com.example.CursoComposeAristiDev.ui.theme.colorBackgroundComponent
 import com.example.CursoComposeAristiDev.ui.theme.colorBackgroundComponentSelected
 import com.example.CursoComposeAristiDev.ui.theme.colorSecondaryText
-import com.example.CursoComposeAristiDev.ui.theme.colorSelectedCard
-import com.example.CursoComposeAristiDev.ui.theme.colorUnSelectedCard
 
 /*
   Selector de género formado por dos cards o tarjetas

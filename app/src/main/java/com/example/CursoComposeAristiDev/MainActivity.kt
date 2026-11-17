@@ -29,11 +29,11 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             CursoComposeAristiDev_Theme {
-               //IMCScreen()
+              // IMCScreen()
                 AppNavigation()
                // MenuScreen(modifier = Modifier.fillMaxWidth())
                 //Ejercicio2_TextField_StateHosting(modifier = Modifier.fillMaxWidth())
-               // CounterScreenPrueba()
+                //CounterScreenPrueba()
                // CounterScreen_Example4(modifier=Modifier.fillMaxSize())
                 //CounterScreen(Modifier.fillMaxSize())
                 //  ListExample_2()

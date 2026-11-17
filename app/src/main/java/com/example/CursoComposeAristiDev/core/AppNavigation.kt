@@ -9,6 +9,7 @@ import androidx.navigation3.ui.NavDisplay
 import com.example.CursoComposeAristiDev.features.IMC.IMCResultScreen
 import com.example.CursoComposeAristiDev.features.IMC.IMCScreen
 import com.example.CursoComposeAristiDev.features.MenuScreen
+import com.example.CursoComposeAristiDev.features.settings.SettingsScreen
 
 @Composable
 fun AppNavigation() {
@@ -17,7 +18,11 @@ fun AppNavigation() {
         entry<Menu> {
             MenuScreen(
                 modifier = Modifier.fillMaxWidth(),
-                onIMCSelected = { backStack.add(IMC) })
+                onIMCSelected = { backStack.add(IMC) },
+                onSettingSelected = {backStack.add(Settings)})
+        }
+        entry<Settings>{
+            SettingsScreen(onBackSelected={backStack.removeLastOrNull()})
         }
         entry<IMC> {
             IMCScreen(
