@@ -57,6 +57,10 @@ fun SettingsScreen(onBackSelected: () -> Unit = {}) {
      3º Escuchar el cambio de las preferencias de notificaciones
      */
     val notificationsEnabled by settingsDataStore.notificationsEnabled.collectAsState(true)
+    //Repetir paso 3º para escuchar las otras variables de preferencias: vibration y sounds
+    val vibrationEnabled by settingsDataStore.vibrationsEnabled.collectAsState(true)
+    val soundsEnabled by settingsDataStore.soundsEnabled.collectAsState(true)
+
     Scaffold(
         topBar = {
             TopAppBar(
@@ -109,15 +113,30 @@ fun SettingsScreen(onBackSelected: () -> Unit = {}) {
                 ),
             ) {
                 Column() {
-                    //4º.- Mostrar el valor de las notificaciones (notificationnsEnabled)
+                    /*4º.- Mostrar el valor de las notificaciones (notificationnsEnabled)
+                    después de cada cambio y  actualizarlo en la base de datos    */
                     Switch(checked = notificationsEnabled, onCheckedChange = {
                             isChecked ->
                         coroutineScope.launch {
                             settingsDataStore.setNotificationsEnabled(isChecked)
                         }
                     })
-                    Switch(checked = false, onCheckedChange = {})
-                    Switch(checked = true, onCheckedChange = {})
+                    /*Switch(checked = false, onCheckedChange = {})
+                    Switch(checked = true, onCheckedChange = {})*/
+                    //Repetir paso 4º para las variables vibration y sounds
+                    Switch(checked = vibrationEnabled, onCheckedChange = {
+                        isChecked->
+                        coroutineScope.launch {
+                            settingsDataStore.setVibrationsEnabled(isChecked)  /*Es una forma
+                            de pasar el nuevo valor*/
+                        }
+                    })
+                    Switch(checked = soundsEnabled, onCheckedChange = {
+                        coroutineScope.launch {
+                            settingsDataStore.setSoundEnabled(it)  /*it, es una forma
+                            de pasar el nuevo valor*/
+                        }
+                    })
                 }
             }
             Spacer(modifier = Modifier.height(32.dp))
