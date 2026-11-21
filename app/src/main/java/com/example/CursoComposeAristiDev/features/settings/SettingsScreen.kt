@@ -21,6 +21,7 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -33,13 +34,16 @@ import com.example.CursoComposeAristiDev.R
 import com.example.CursoComposeAristiDev.ui.theme.colorBackgroundComponent
 import com.example.CursoComposeAristiDev.ui.theme.colorSecondaryText
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
+import com.example.CursoComposeAristiDev.ui.theme.colorAppBackground
 import kotlinx.coroutines.launch
+
 @Preview
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SettingsScreen(onBackSelected: () -> Unit = {}) {
     //1º.- constante context representa el contexto o composable actual
-    val context= LocalContext.current
+    val context = LocalContext.current
 
     //2º- constante settingsDataStore representa la base de datos (BD) de preferencias
     /*¡Ojo!No deberíamos declararla dentro de un composable
@@ -49,7 +53,7 @@ fun SettingsScreen(onBackSelected: () -> Unit = {}) {
     remember para que recuerde los cambios de estado de la BD.
     */
     //val settingsDataStore= SettingsDataStore(context)
-    val settingsDataStore= remember {SettingsDataStore(context)}
+    val settingsDataStore = remember { SettingsDataStore(context) }
 
     //Declarar variable coroutineScope para ejecutar dentro de un hilo un método suspendido
     val coroutineScope = rememberCoroutineScope()
@@ -60,7 +64,14 @@ fun SettingsScreen(onBackSelected: () -> Unit = {}) {
     //Repetir paso 3º para escuchar las otras variables de preferencias: vibration y sounds
     val vibrationEnabled by settingsDataStore.vibrationsEnabled.collectAsState(true)
     val soundsEnabled by settingsDataStore.soundsEnabled.collectAsState(true)
-
+    val username by settingsDataStore.username.collectAsState("")
+    /*
+    key1: recoge el último valor actualizado en la base de datos de username
+    usernameText: regoge el valor de key1 cada vez que se actualiza
+     */
+    var usernameText by remember(username){
+        mutableStateOf(username)
+    }
     Scaffold(
         topBar = {
             TopAppBar(
@@ -73,7 +84,9 @@ fun SettingsScreen(onBackSelected: () -> Unit = {}) {
                         )
                     }
                 })
-        }
+        },
+        containerColor = colorAppBackground
+        //Ojo!!Añadir en el Scaffold de SettingScreen
     ) { paddingValues ->
         Column(
             modifier = Modifier
@@ -82,22 +95,26 @@ fun SettingsScreen(onBackSelected: () -> Unit = {}) {
                 .padding(16.dp)
         ) {
             //1ª Card para cuenta de usuario o nickName
-            Card(
-                modifier = Modifier.fillMaxWidth(),
+            Text("CUENTA",fontSize = 14.sp,fontWeight = FontWeight.Medium,color = colorSecondaryText)
+            Card(modifier = Modifier.fillMaxWidth(),
                 shape = RoundedCornerShape(16.dp),
-                colors = CardDefaults.cardColors(
-                    containerColor = colorBackgroundComponent
-                ),
+                colors = CardDefaults.cardColors(containerColor = colorBackgroundComponent),
             ) {
-                Text(
-                    "CUENTA",
-                    fontSize = 14.sp,
-                    fontWeight = FontWeight.Medium,
-                    color = colorSecondaryText
-                )
-                TextField(
-                    value = "ARIS",
-                    onValueChange = {})
+               // usernameSetting(username = "ARIS", onUsernameChanged = {}, onSave = {})
+                /*
+                  Sustituir el literal "ARIS" por la variable username declarada anteriormente.
+                  PERO ESTO NO FUNIONARIA: Porque si solo hacemos esto, el usuario no veria
+                  la nueva cadena que está escribiendo para username, porque solo se guarda
+                  en la base de datos, cuando se pulsa el botón onSave:
+                 */
+                usernameSetting(username = usernameText,
+                    onUsernameChanged = {
+                        usernameText=it
+                    }, onSave = {
+                        coroutineScope.launch {
+                            settingsDataStore.setUsername(usernameText)
+                        }
+                    })
             }//fin nickNameCard
 
             Spacer(modifier = Modifier.height(32.dp))
@@ -115,8 +132,7 @@ fun SettingsScreen(onBackSelected: () -> Unit = {}) {
                 Column() {
                     /*4º.- Mostrar el valor de las notificaciones (notificationnsEnabled)
                     después de cada cambio y  actualizarlo en la base de datos    */
-                    Switch(checked = notificationsEnabled, onCheckedChange = {
-                            isChecked ->
+                    Switch(checked = notificationsEnabled, onCheckedChange = { isChecked ->
                         coroutineScope.launch {
                             settingsDataStore.setNotificationsEnabled(isChecked)
                         }
@@ -124,8 +140,7 @@ fun SettingsScreen(onBackSelected: () -> Unit = {}) {
                     /*Switch(checked = false, onCheckedChange = {})
                     Switch(checked = true, onCheckedChange = {})*/
                     //Repetir paso 4º para las variables vibration y sounds
-                    Switch(checked = vibrationEnabled, onCheckedChange = {
-                        isChecked->
+                    Switch(checked = vibrationEnabled, onCheckedChange = { isChecked ->
                         coroutineScope.launch {
                             settingsDataStore.setVibrationsEnabled(isChecked)  /*Es una forma
                             de pasar el nuevo valor*/
@@ -140,7 +155,7 @@ fun SettingsScreen(onBackSelected: () -> Unit = {}) {
                 }
             }
             Spacer(modifier = Modifier.height(32.dp))
-            Button(onClick = {}) {   Text("RESTABLECER AJUSTES")     }
+            Button(onClick = {}) { Text("RESTABLECER AJUSTES") }
 
         }
     }//fin Scaffold

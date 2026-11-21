@@ -3,6 +3,7 @@ package com.example.CursoComposeAristiDev.features.settings
 import android.content.Context
 import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
+import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
@@ -25,6 +26,7 @@ private object PreferencesKey{
     val NOTIFICATIONS= booleanPreferencesKey(name="notifications")
     val VIBRATION= booleanPreferencesKey("vibration")
     val SOUNDS=booleanPreferencesKey("sounds")
+    val USERNAME= stringPreferencesKey("username")
 }
 
 /*
@@ -46,6 +48,9 @@ class SettingsDataStore(private val context: Context){
         preferences -> preferences[PreferencesKey.SOUNDS]?:true
     }
 
+    val username:Flow<String> = context.datastore.data.map {
+        preferences -> preferences[PreferencesKey.USERNAME]?:""
+    }
 
     //3.b) Actualizar el estado o cambio de la variable notifications en la base de datos
     suspend fun setNotificationsEnabled(enabled:Boolean){
@@ -63,4 +68,10 @@ class SettingsDataStore(private val context: Context){
     suspend fun setSoundEnabled(enabled: Boolean){
         context.datastore.edit{preferences -> preferences[PreferencesKey.SOUNDS]=enabled}
     }
+
+    suspend fun setUsername(username: String){
+        context.datastore.edit{preferences -> preferences[PreferencesKey.USERNAME]=username}
+    }
+
+
 }//fin SettingsDataStore
