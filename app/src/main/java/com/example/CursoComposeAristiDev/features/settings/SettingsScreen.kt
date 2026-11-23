@@ -1,6 +1,7 @@
 package com.example.CursoComposeAristiDev.features.settings
 
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -15,6 +16,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Switch
+import androidx.compose.material3.SwitchDefaults
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TopAppBar
@@ -35,7 +37,11 @@ import com.example.CursoComposeAristiDev.ui.theme.colorBackgroundComponent
 import com.example.CursoComposeAristiDev.ui.theme.colorSecondaryText
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.input.pointer.motionEventSpy
 import com.example.CursoComposeAristiDev.ui.theme.colorAppBackground
+import com.example.CursoComposeAristiDev.ui.theme.colorControl
 import kotlinx.coroutines.launch
 
 @Preview
@@ -69,7 +75,7 @@ fun SettingsScreen(onBackSelected: () -> Unit = {}) {
     key1: recoge el último valor actualizado en la base de datos de username
     usernameText: regoge el valor de key1 cada vez que se actualiza
      */
-    var usernameText by remember(username){
+    var usernameText by remember(username) {
         mutableStateOf(username)
     }
     Scaffold(
@@ -95,21 +101,28 @@ fun SettingsScreen(onBackSelected: () -> Unit = {}) {
                 .padding(16.dp)
         ) {
             //1ª Card para cuenta de usuario o nickName
-            Text("CUENTA",fontSize = 14.sp,fontWeight = FontWeight.Medium,color = colorSecondaryText)
-            Card(modifier = Modifier.fillMaxWidth(),
+            Text(
+                "CUENTA",
+                fontSize = 14.sp,
+                fontWeight = FontWeight.Medium,
+                color = colorSecondaryText
+            )
+            Card(
+                modifier = Modifier.fillMaxWidth(),
                 shape = RoundedCornerShape(16.dp),
                 colors = CardDefaults.cardColors(containerColor = colorBackgroundComponent),
             ) {
-               // usernameSetting(username = "ARIS", onUsernameChanged = {}, onSave = {})
+                // usernameSetting(username = "ARIS", onUsernameChanged = {}, onSave = {})
                 /*
                   Sustituir el literal "ARIS" por la variable username declarada anteriormente.
                   PERO ESTO NO FUNIONARIA: Porque si solo hacemos esto, el usuario no veria
                   la nueva cadena que está escribiendo para username, porque solo se guarda
                   en la base de datos, cuando se pulsa el botón onSave:
                  */
-                usernameSetting(username = usernameText,
+                usernameSetting(
+                    username = usernameText,
                     onUsernameChanged = {
-                        usernameText=it
+                        usernameText = it
                     }, onSave = {
                         coroutineScope.launch {
                             settingsDataStore.setUsername(usernameText)
@@ -130,28 +143,61 @@ fun SettingsScreen(onBackSelected: () -> Unit = {}) {
                 ),
             ) {
                 Column() {
-                    /*4º.- Mostrar el valor de las notificaciones (notificationnsEnabled)
-                    después de cada cambio y  actualizarlo en la base de datos    */
-                    Switch(checked = notificationsEnabled, onCheckedChange = { isChecked ->
-                        coroutineScope.launch {
-                            settingsDataStore.setNotificationsEnabled(isChecked)
-                        }
-                    })
-                    /*Switch(checked = false, onCheckedChange = {})
-                    Switch(checked = true, onCheckedChange = {})*/
-                    //Repetir paso 4º para las variables vibration y sounds
-                    Switch(checked = vibrationEnabled, onCheckedChange = { isChecked ->
-                        coroutineScope.launch {
-                            settingsDataStore.setVibrationsEnabled(isChecked)  /*Es una forma
-                            de pasar el nuevo valor*/
-                        }
-                    })
-                    Switch(checked = soundsEnabled, onCheckedChange = {
-                        coroutineScope.launch {
-                            settingsDataStore.setSoundEnabled(it)  /*it, es una forma
-                            de pasar el nuevo valor*/
-                        }
-                    })
+                    //¡Ojo! Sustituir el código repetido por 3 llamadas al composable SettingSwitch
+                    //LLamada1
+                    SettingSwitch(
+                        "Notificaciones",
+                        "Recibir avisos de la app",
+                        notificationsEnabled,
+                        onCheckedChange = { isChecked ->
+                            coroutineScope.launch {
+                                settingsDataStore.setNotificationsEnabled(isChecked)
+                            }
+                        })
+                    //LLamada2
+                    SettingSwitch(
+                        "Vibración",
+                        "Vibrar al recibir acciones",
+                        vibrationEnabled,
+                        onCheckedChange = { isChecked ->
+                            coroutineScope.launch {
+                                settingsDataStore.setVibrationsEnabled(isChecked)  /*Es una forma
+                             de pasar el nuevo valor*/
+                            }
+                        })
+                    //LLamada3
+                    SettingSwitch(
+                        "Sonidos",
+                        "Reproducir sonidos en la app",
+                        soundsEnabled,
+                        onCheckedChange = {
+                            coroutineScope.launch {
+                                settingsDataStore.setSoundEnabled(it)  /*it, es una forma
+                             de pasar el nuevo valor*/
+                            }
+                        })
+                    /* Switch(checked = notificationsEnabled, onCheckedChange = { isChecked ->
+                         coroutineScope.launch {
+                             settingsDataStore.setNotificationsEnabled(isChecked)
+                         }
+                     })
+
+                     Switch(checked = vibrationEnabled, onCheckedChange = { isChecked ->
+                         coroutineScope.launch {
+                             settingsDataStore.setVibrationsEnabled(isChecked)  /*Es una forma
+                             de pasar el nuevo valor*/
+                         }
+                     })
+
+
+                     Switch(checked = soundsEnabled, onCheckedChange = {
+                         coroutineScope.launch {
+                             settingsDataStore.setSoundEnabled(it)  /*it, es una forma
+                             de pasar el nuevo valor*/
+                         }
+                     })
+                     */
+
                 }
             }
             Spacer(modifier = Modifier.height(32.dp))
@@ -159,4 +205,44 @@ fun SettingsScreen(onBackSelected: () -> Unit = {}) {
 
         }
     }//fin Scaffold
+}//fin SettingsScreen
+
+
+@Composable
+fun SettingSwitch(
+    title: String,
+    description: String,
+    enabled: Boolean = true,
+    onCheckedChange: (Boolean) -> Unit = {}
+) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 20.dp, vertical = 18.dp),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Column(modifier = Modifier.weight(1f)) {
+            Text(
+                title, fontSize = 16.sp, fontWeight = FontWeight.Medium,
+                color = Color.White
+            )
+            Spacer(modifier = Modifier.height(4.dp))
+            Text(
+                description,
+                fontSize = 14.sp,
+                fontWeight = FontWeight.Medium,
+                color = colorSecondaryText
+            )
+            Switch(
+                checked = enabled, onCheckedChange = onCheckedChange,
+                colors = SwitchDefaults.colors(
+                    checkedThumbColor = Color.White,
+                    uncheckedThumbColor = colorSecondaryText,
+                    checkedTrackColor = colorControl,
+                    uncheckedTrackColor = colorBackgroundComponent,
+                    uncheckedBorderColor = colorSecondaryText
+                )
+            )
+        }
+    }//fin SettingSwitch
 }//fin SettingsScreen
